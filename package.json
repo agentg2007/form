@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npx tsc --config tsconfig.dev.json -w",
-    "prepublish": "npx tsc --config tsconfig.json"
+    "test": "npx tsc --project tsconfig.dev.json -w",
+    "prepublish": "npx tsc"
   },
   "repository": {
     "type": "git",
