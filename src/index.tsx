@@ -1,33 +1,40 @@
-import React, { PropsWithChildren, Reducer, useReducer } from "react"
-import { FormDataContext, FormDataStateType } from "./models"
+import React, { PropsWithChildren, Reducer, useReducer } from "react";
+import {
+    FormConfigurationContext,
+    FormConfigurationStateType
+} from "./models";
 
-type FormDataProviderProps = {
+type FormConfigurationProviderProps = {
 
 }
-const FormDataProvider = ({
-    children
-}: PropsWithChildren<FormDataProviderProps>) => {
-    const [state, dispatch] = useReducer(FormDataProviderReducer, {
-        valid: false
+export const FormConfigurationProvider = ({
+    children,
+    components,
+    dataTypes,
+    validators,
+}: PropsWithChildren<FormConfigurationStateType>) => {
+    const [state, dispatch] = useReducer(FormConfigurationProviderReducer, {
+        components,
+        dataTypes,
+        validators,
     });
-    return <FormDataContext.Provider children={children} value={{
+    return <FormConfigurationContext.Provider children={children} value={{
         state, dispatch: (command, payload) => dispatch({ command, payload })
     }} />
 }
-FormDataProvider.displayName = "FormDataProvider";
-export default FormDataProvider;
+FormConfigurationProvider.displayName = "FormConfigurationProvider";
 
-type FormDataReducerActionType = {
+type FormConfigurationReducerActionType = {
     command: string;
     payload: any;
 }
-const FormDataProviderReducer: Reducer<
-    FormDataStateType,
-    FormDataReducerActionType
+const FormConfigurationProviderReducer: Reducer<
+    FormConfigurationStateType,
+    FormConfigurationReducerActionType
 > = (state, { command, payload }) => {
-    const upst = (newState: Partial<FormDataStateType>) => ({ ...state, ...newState });
+    const upst = (newState: Partial<FormConfigurationStateType>) => ({ ...state, ...newState });
     switch (command) {
         default:
             return state;
     }
-};
+}; 

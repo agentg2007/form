@@ -1,14 +1,34 @@
-import { createContext } from "react"
+import { InputComponentType, ValidatorMethod } from "@nthity/validation";
+import { ComponentType, createContext } from "react";
 
-export type FormDataStateType = {
-    valid: boolean;
+export type FormConfigurationStateType = {
+    dataTypes: { [name: string]: InputComponentType };
+    validators: { [name: string]: ValidatorMethod };
+    components: Partial<FormComponents>;
+};
+
+/**
+ * 
+ */
+export type FormComponents = {
+    /**
+     * Serves as BUTTON element.
+     */
+    button: ComponentType;
+    /**
+     * Serves as DIV element.
+     */
+    container: ComponentType;
 }
-export const FormDataContext = createContext<{
-    state: FormDataStateType;
+
+export const FormConfigurationContext = createContext<{
+    state: FormConfigurationStateType;
     dispatch(command: string, payload: any): void;
 }>({
     state: {
-        valid: false,
+        dataTypes: {},
+        validators: {},
+        components: {}
     },
     dispatch: (command, payload) => { }
-})
+}); 
