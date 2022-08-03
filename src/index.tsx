@@ -1,40 +1,63 @@
-import React, { PropsWithChildren, Reducer, useReducer } from "react";
+import {
+    DateTimeRangeFieldValidator,
+    EmailFieldValidator,
+    NumberInputFieldValidator,
+    NumberRangeFieldValidator,
+    RequiredFieldValidator,
+    SelectedItemCountFieldValidator,
+    StringLengthFieldValidator,
+    UrlFieldValidator
+} from "@nthity/validation/validators";
+import React, { PropsWithChildren, useMemo } from "react";
+import styled from "styled-components";
+import { StringInput } from "./components";
 import {
     FormConfigurationContext,
-    FormConfigurationStateType
+    FormConfigurationType
 } from "./models";
 
-type FormConfigurationProviderProps = {
+type FormConfigurationProviderProps = Partial<FormConfigurationType> & {
 
 }
-export const FormConfigurationProvider = ({
+const FormConfigurationProvider = ({
     children,
-    components,
-    dataTypes,
-    validators,
-}: PropsWithChildren<FormConfigurationStateType>) => {
-    const [state, dispatch] = useReducer(FormConfigurationProviderReducer, {
+    classes = {},
+    components = {},
+    dataTypes = {},
+    validators = {},
+}: PropsWithChildren<FormConfigurationProviderProps>) => {
+    const state = useMemo(() => ({
         components,
         dataTypes,
         validators,
-    });
-    return <FormConfigurationContext.Provider children={children} value={{
-        state, dispatch: (command, payload) => dispatch({ command, payload })
-    }} />
+        classes
+    }), []);
+    return <FormConfigurationContext.Provider value={{ state }} children={children} />
 }
 FormConfigurationProvider.displayName = "FormConfigurationProvider";
+export default FormConfigurationProvider;
 
-type FormConfigurationReducerActionType = {
-    command: string;
-    payload: any;
-}
-const FormConfigurationProviderReducer: Reducer<
-    FormConfigurationStateType,
-    FormConfigurationReducerActionType
-> = (state, { command, payload }) => {
-    const upst = (newState: Partial<FormConfigurationStateType>) => ({ ...state, ...newState });
-    switch (command) {
-        default:
-            return state;
+export const BasicConfiguration: FormConfigurationType = {
+    classes: {
+        error: "error"
+    },
+    dataTypes: {
+        string: {
+            component: StringInput
+        },
+    },
+    components: {
+        button: styled.button``,
+        container: styled.div``,
+    },
+    validators: {
+        DateTimeRangeFieldValidator,
+        EmailFieldValidator,
+        NumberInputFieldValidator,
+        NumberRangeFieldValidator,
+        RequiredFieldValidator,
+        SelectedItemCountFieldValidator,
+        StringLengthFieldValidator,
+        UrlFieldValidator
     }
 }; 

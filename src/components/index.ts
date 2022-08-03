@@ -1,0 +1,1 @@
+export { default as StringInput, StringInputProps } from "./StringInput"

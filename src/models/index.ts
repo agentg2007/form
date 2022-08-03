@@ -1,10 +1,17 @@
 import { InputComponentType, ValidatorMethod } from "@nthity/validation";
 import { ComponentType, createContext } from "react";
 
-export type FormConfigurationStateType = {
-    dataTypes: { [name: string]: InputComponentType };
-    validators: { [name: string]: ValidatorMethod };
+export type Dictionary<T = any> = { [name: string]: T };
+
+export type FormConfigurationType = {
+    classes: Partial<{
+        error: string;
+    }>;
     components: Partial<FormComponents>;
+    dataTypes: Dictionary<{
+        component: ComponentType<Omit<InputComponentType, "componentId">>;
+    }>;
+    validators: Dictionary<ValidatorMethod>;
 };
 
 /**
@@ -22,13 +29,12 @@ export type FormComponents = {
 }
 
 export const FormConfigurationContext = createContext<{
-    state: FormConfigurationStateType;
-    dispatch(command: string, payload: any): void;
+    state: FormConfigurationType;
 }>({
     state: {
+        classes: {},
+        components: {},
         dataTypes: {},
         validators: {},
-        components: {}
     },
-    dispatch: (command, payload) => { }
 }); 
